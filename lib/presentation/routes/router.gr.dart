@@ -18,7 +18,7 @@ class AppRouter extends _i1.RootStackRouter {
     LandingRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (_) {
-          return const _i3.LandingPage();
+          return _i3.LandingPage();
         })
   };
 
