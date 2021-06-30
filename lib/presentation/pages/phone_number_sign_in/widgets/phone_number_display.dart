@@ -3,12 +3,11 @@ import 'package:flutter/material.dart';
 import '../constants/constants.dart';
 import 'gradient_text.dart';
 
-class AuthTextButton extends StatelessWidget {
-  final String text;
-  final void Function() onPressed;
-  const AuthTextButton({
-    required this.text,
-    required this.onPressed,
+class PhoneNumberDisplay extends StatelessWidget {
+  final String phoneNumber;
+
+  const PhoneNumberDisplay({
+    required this.phoneNumber,
   });
 
   @override
@@ -24,13 +23,13 @@ class AuthTextButton extends StatelessWidget {
           ),
         ],
       ),
-      child: FlatButton(
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        color: Colors.white,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        onPressed: onPressed,
+      child: Container(
+        decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.all(Radius.circular(20))),
+        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
         child: GradientText(
-          text,
+          "You are signed in with: \n $phoneNumber",
           gradientColors: const [topGradientColor, bottomGradientColor],
           style: const TextStyle(fontSize: 18),
         ),
