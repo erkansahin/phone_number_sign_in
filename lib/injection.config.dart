@@ -13,7 +13,8 @@ import 'application/auth/phone_number_sign_in/phone_number_sign_in_cubit.dart'
     as _i7;
 import 'domain/auth/i_auth_service.dart' as _i5;
 import 'infrastructure/auth/firebase_auth_facade.dart' as _i6;
-import 'infrastructure/core/injectable_module.dart'
+import 'infrastructure/core/injectable_module.dart' as _i9;
+import 'presentation/routes/router.gr.dart'
     as _i8; // ignore_for_file: unnecessary_lambdas
 
 // ignore_for_file: lines_longer_than_80_chars
@@ -27,7 +28,8 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
   gh.lazySingleton<_i5.IAuthService>(
       () => _i6.FirebaseAuthService(get<_i4.FirebaseAuth>()));
   gh.factory<_i7.PhoneNumberSignInCubit>(() => _i7.PhoneNumberSignInCubit());
+  gh.singleton<_i8.AppRouter>(injectableModule.appRouter);
   return get;
 }
 
-class _$InjectableModule extends _i8.InjectableModule {}
+class _$InjectableModule extends _i9.InjectableModule {}

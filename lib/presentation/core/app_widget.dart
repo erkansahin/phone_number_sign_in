@@ -15,7 +15,7 @@ class _MyAppState extends State<MyApp> {
   final BotToastNavigatorObserver botToastNavigatorObserver =
       BotToastNavigatorObserver();
   final botToastBuilder = BotToastInit();
-  final AppRouter _appRouter = AppRouter();
+  final AppRouter _appRouter = getIt<AppRouter>();
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
