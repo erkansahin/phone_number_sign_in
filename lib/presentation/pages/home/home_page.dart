@@ -16,7 +16,7 @@ class HomePage extends StatelessWidget {
     return BlocListener<AuthCubit, AuthState>(
       listenWhen: (p, c) => p.isLoggedIn != c.isLoggedIn && !c.isLoggedIn,
       listener: (context, state) {
-        AutoRouter.of(context).navigate(const PhoneNumberSignInRoute());
+        AutoRouter.of(context).replace(const PhoneNumberSignInRoute());
       },
       child: WillPopScope(
         onWillPop: () => Future<bool>.value(false),

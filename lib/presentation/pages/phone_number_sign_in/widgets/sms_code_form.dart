@@ -72,6 +72,8 @@ class SMSCodeForm extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
               child: PinCodeTextField(
+                keyboardType: TextInputType.phone,
+                autoFocus: true,
                 length: 6,
                 animationType: AnimationType.fade,
                 pinTheme: PinTheme(

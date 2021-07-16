@@ -29,170 +29,168 @@ class _PhoneNumberSignInPageState extends State<PhoneNumberSignInPage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () => Future.value(false),
-      child: BlocProvider(
-        create: (context) => getIt<PhoneNumberSignInCubit>(),
-        child: MultiBlocListener(
-          listeners: [
-            BlocListener<AuthCubit, AuthState>(
-              listenWhen: (p, c) => p.isLoggedIn != c.isLoggedIn,
-              listener: (context, state) {
-                if (state.isLoggedIn) {
-                  AutoRouter.of(context).navigate(
-                    const HomeRoute(),
-                  );
-                }
-                context.read<PhoneNumberSignInCubit>().reset();
-              },
-            ),
-            BlocListener<PhoneNumberSignInCubit, PhoneNumberSignInState>(
-              listenWhen: (p, c) => p.failureOption != c.failureOption,
-              listener: (context, state) {
-                state.failureOption.fold(() {}, (failure) {
-                  BotToast.showText(
-                    text: failure.when(
-                        serverError: () => "Server Error",
-                        invalidPhoneNumber: () => "Invalid Phone Number",
-                        tooManyRequests: () => "Too Many Requests",
-                        deviceNotSupported: () => "Device Not Supported",
-                        smsTimeout: () => "Sms Timeout",
-                        sessionExpired: () => "Session Expired",
-                        invalidVerificationCode: () =>
-                            "Invalid Verification Code"),
-                  );
+    return BlocProvider(
+      create: (context) => getIt<PhoneNumberSignInCubit>(),
+      child: MultiBlocListener(
+        listeners: [
+          BlocListener<AuthCubit, AuthState>(
+            listenWhen: (p, c) => p.isLoggedIn != c.isLoggedIn,
+            listener: (context, state) {
+              if (state.isLoggedIn) {
+                AutoRouter.of(context).replace(
+                  const HomeRoute(),
+                );
+              }
+              context.read<PhoneNumberSignInCubit>().reset();
+            },
+          ),
+          BlocListener<PhoneNumberSignInCubit, PhoneNumberSignInState>(
+            listenWhen: (p, c) => p.failureOption != c.failureOption,
+            listener: (context, state) {
+              state.failureOption.fold(() {}, (failure) {
+                BotToast.showText(
+                  text: failure.when(
+                      serverError: () => "Server Error",
+                      invalidPhoneNumber: () => "Invalid Phone Number",
+                      tooManyRequests: () => "Too Many Requests",
+                      deviceNotSupported: () => "Device Not Supported",
+                      smsTimeout: () => "Sms Timeout",
+                      sessionExpired: () => "Session Expired",
+                      invalidVerificationCode: () =>
+                          "Invalid Verification Code"),
+                );
 
-                  context.read<PhoneNumberSignInCubit>().reset();
-                });
-              },
+                context.read<PhoneNumberSignInCubit>().reset();
+              });
+            },
+          ),
+        ],
+        child: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                topGradientColor,
+                bottomGradientColor,
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
             ),
-          ],
-          child: Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  topGradientColor,
-                  bottomGradientColor,
-                ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
-            ),
-            child: Scaffold(
-              backgroundColor: Colors.transparent,
-              body: SafeArea(
-                child: KeyboardVisibilityBuilder(
-                  builder: (BuildContext context, bool isKeyboardVisible) {
-                    final Size size = MediaQuery.of(context).size;
-                    return SingleChildScrollView(
-                      physics: isKeyboardVisible
-                          ? const BouncingScrollPhysics()
-                          : const NeverScrollableScrollPhysics(),
-                      child: SizedBox(
-                        height: size.height,
-                        width: size.width,
-                        child: BlocBuilder<PhoneNumberSignInCubit,
-                            PhoneNumberSignInState>(
-                          builder: (BuildContext context,
-                              PhoneNumberSignInState phoneNumberSignInState) {
-                            return Column(
-                              children: [
-                                AuthLogo(),
-                                if (phoneNumberSignInState.displaySmsCodeForm)
-                                  Expanded(
-                                    child: Container(
-                                      alignment: Alignment.bottomCenter,
-                                      child: Row(
-                                        children: [
-                                          Expanded(
-                                            child: SMSCodeForm(
-                                              phoneNumber:
-                                                  phoneNumberSignInState
-                                                      .phoneNumber,
-                                              onChanged: (val) {
-                                                context
-                                                    .read<
-                                                        PhoneNumberSignInCubit>()
-                                                    .smsCodeChanged(
-                                                        smsCode: val ?? "");
-                                              },
-                                              onCompleted: (val) {
-                                                context
-                                                    .read<
-                                                        PhoneNumberSignInCubit>()
-                                                    .verifySmsCode();
-                                              },
-                                              onTimerCompleted: () {
-                                                BotToast.showText(
-                                                    text: "SMS Code Timeout!");
-                                                context
-                                                    .read<
-                                                        PhoneNumberSignInCubit>()
-                                                    .reset();
-                                              },
-                                              smsCodeTimeoutSeconds:
-                                                  smsTimeoutInSeconds,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  )
-                                else
-                                  Container(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(20, 8, 20, 0),
-                                    child: Column(
+          ),
+          child: Scaffold(
+            backgroundColor: Colors.transparent,
+            body: SafeArea(
+              child: KeyboardVisibilityBuilder(
+                builder: (BuildContext context, bool isKeyboardVisible) {
+                  final Size size = MediaQuery.of(context).size;
+                  return SingleChildScrollView(
+                    physics: isKeyboardVisible
+                        ? const BouncingScrollPhysics()
+                        : const NeverScrollableScrollPhysics(),
+                    child: SizedBox(
+                      height: size.height,
+                      width: size.width,
+                      child: BlocBuilder<PhoneNumberSignInCubit,
+                          PhoneNumberSignInState>(
+                        builder: (BuildContext context,
+                            PhoneNumberSignInState phoneNumberSignInState) {
+                          return Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(top: 83.0),
+                                child: AuthLogo(),
+                              ),
+                              if (phoneNumberSignInState.displaySmsCodeForm)
+                                Expanded(
+                                  child: Container(
+                                    alignment: Alignment.bottomCenter,
+                                    child: Row(
                                       children: [
-                                        PhoneNumberForm(
-                                          formKey: _phoneFormKey,
-                                          onInputChanged: (val) => context
-                                              .read<PhoneNumberSignInCubit>()
-                                              .phoneNumberChanged(
-                                                phoneNumber: val ?? "",
-                                              ),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 16),
-                                          child: Align(
-                                            alignment: Alignment.topRight,
-                                            child: phoneNumberSignInState
-                                                    .isInProgress
-                                                ? Container()
-                                                : AuthTextButton(
-                                                    text: "Next",
-                                                    onPressed: () {
-                                                      if (_phoneFormKey
-                                                                  .currentState !=
-                                                              null &&
-                                                          _phoneFormKey
-                                                              .currentState!
-                                                              .validate()) {
-                                                        context
-                                                            .read<
-                                                                PhoneNumberSignInCubit>()
-                                                            .signInWithPhoneNumber();
-                                                      }
-                                                    },
-                                                  ),
+                                        Expanded(
+                                          child: SMSCodeForm(
+                                            phoneNumber: phoneNumberSignInState
+                                                .phoneNumber,
+                                            onChanged: (val) {
+                                              context
+                                                  .read<
+                                                      PhoneNumberSignInCubit>()
+                                                  .smsCodeChanged(
+                                                      smsCode: val ?? "");
+                                            },
+                                            onCompleted: (val) {
+                                              context
+                                                  .read<
+                                                      PhoneNumberSignInCubit>()
+                                                  .verifySmsCode();
+                                            },
+                                            onTimerCompleted: () {
+                                              BotToast.showText(
+                                                  text: "SMS Code Timeout!");
+                                              context
+                                                  .read<
+                                                      PhoneNumberSignInCubit>()
+                                                  .reset();
+                                            },
+                                            smsCodeTimeoutSeconds:
+                                                smsTimeoutInSeconds,
                                           ),
                                         ),
-                                        if (phoneNumberSignInState.isInProgress)
-                                          const JumpingDotsLoadingIndicator(
-                                            color: Colors.white,
-                                          )
                                       ],
                                     ),
                                   ),
-                              ],
-                            );
-                          },
-                        ),
+                                )
+                              else
+                                Container(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(20, 8, 20, 0),
+                                  child: Column(
+                                    children: [
+                                      PhoneNumberForm(
+                                        formKey: _phoneFormKey,
+                                        onInputChanged: (val) => context
+                                            .read<PhoneNumberSignInCubit>()
+                                            .phoneNumberChanged(
+                                              phoneNumber: val ?? "",
+                                            ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 16),
+                                        child: Align(
+                                          alignment: Alignment.topRight,
+                                          child: phoneNumberSignInState
+                                                  .isInProgress
+                                              ? Container()
+                                              : AuthTextButton(
+                                                  text: "Next",
+                                                  onPressed: () {
+                                                    if (_phoneFormKey
+                                                                .currentState !=
+                                                            null &&
+                                                        _phoneFormKey
+                                                            .currentState!
+                                                            .validate()) {
+                                                      context
+                                                          .read<
+                                                              PhoneNumberSignInCubit>()
+                                                          .signInWithPhoneNumber();
+                                                    }
+                                                  },
+                                                ),
+                                        ),
+                                      ),
+                                      if (phoneNumberSignInState.isInProgress)
+                                        const JumpingDotsLoadingIndicator(
+                                          color: Colors.white,
+                                        )
+                                    ],
+                                  ),
+                                ),
+                            ],
+                          );
+                        },
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  );
+                },
               ),
             ),
           ),

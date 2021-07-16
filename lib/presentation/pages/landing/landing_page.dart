@@ -1,4 +1,6 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:bare_bones/presentation/pages/phone_number_sign_in/constants/constants.dart';
+import 'package:bare_bones/presentation/pages/phone_number_sign_in/widgets/gradient_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -15,14 +17,17 @@ class LandingPage extends StatefulWidget {
 class _LandingPageState extends State<LandingPage> {
   @override
   void didChangeDependencies() {
-    final bool isUserLoggedIn = context.read<AuthCubit>().state.isLoggedIn;
-    final bool isUserCheckedFromAuthService =
-        context.read<AuthCubit>().state.isUserCheckedFromAuthService;
-    if (isUserLoggedIn) {
-      AutoRouter.of(context).navigate(const HomeRoute());
-    } else if (!isUserLoggedIn && isUserCheckedFromAuthService) {
-      AutoRouter.of(context).navigate(const PhoneNumberSignInRoute());
-    }
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      final bool isUserLoggedIn = context.read<AuthCubit>().state.isLoggedIn;
+      final bool isUserCheckedFromAuthService =
+          context.read<AuthCubit>().state.isUserCheckedFromAuthService;
+      if (isUserLoggedIn) {
+        AutoRouter.of(context).replace(const HomeRoute());
+      } else if (!isUserLoggedIn && isUserCheckedFromAuthService) {
+        AutoRouter.of(context).replace(const PhoneNumberSignInRoute());
+      }
+    });
+
     super.didChangeDependencies();
   }
 
@@ -36,15 +41,16 @@ class _LandingPageState extends State<LandingPage> {
         final bool isUserLoggedIn = state.isLoggedIn;
 
         if (isUserLoggedIn) {
-          AutoRouter.of(context).navigate(const HomeRoute());
+          AutoRouter.of(context).replace(const HomeRoute());
         } else {
-          AutoRouter.of(context).navigate(const PhoneNumberSignInRoute());
+          AutoRouter.of(context).replace(const PhoneNumberSignInRoute());
         }
       },
       child: const Scaffold(
-        body: Center(
+        body: GradientContainer(
+          gradientColors: [topGradientColor, bottomGradientColor],
           child: Center(
-            child: CircularProgressIndicator(),
+            child: CircularProgressIndicator(color: Colors.white),
           ),
         ),
       ),
