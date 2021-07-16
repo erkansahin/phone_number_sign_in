@@ -24,15 +24,23 @@ class AuthTextButton extends StatelessWidget {
           ),
         ],
       ),
-      child: FlatButton(
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        color: Colors.white,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        onPressed: onPressed,
-        child: GradientText(
-          text,
-          gradientColors: const [topGradientColor, bottomGradientColor],
-          style: const TextStyle(fontSize: 18),
+      child: Container(
+        decoration: ShapeDecoration(
+          color: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: TextButton(
+            onPressed: onPressed,
+            child: GradientText(
+              text,
+              gradientColors: const [topGradientColor, bottomGradientColor],
+              style: const TextStyle(fontSize: 18),
+            ),
+          ),
         ),
       ),
     );
