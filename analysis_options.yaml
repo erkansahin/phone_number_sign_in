@@ -4,8 +4,6 @@ include: package:lint/analysis_options.yaml
 
 linter:
   rules:
-    # Blindly follow the Flutter code style, which prefers types everywhere
-    always_specify_types: false
     always_declare_return_types: true
 
 
@@ -24,3 +22,6 @@ analyzer:
     missing_required_param: error
     must_be_immutable: error
     always_declare_return_types: warning
+
+
+
