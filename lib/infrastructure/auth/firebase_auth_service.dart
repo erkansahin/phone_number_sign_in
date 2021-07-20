@@ -21,13 +21,12 @@ class FirebaseAuthService implements IAuthService {
   }
 
   @override
-  Stream<Option<Either<AuthFailure, String>>> signInWithPhoneNumber({
+  Stream<Either<AuthFailure, String>> signInWithPhoneNumber({
     required String phoneNumber,
     required Duration timeout,
   }) async* {
-    final StreamController<Option<Either<AuthFailure, String>>>
-        streamController =
-        StreamController<Option<Either<AuthFailure, String>>>();
+    final StreamController<Either<AuthFailure, String>> streamController =
+        StreamController<Either<AuthFailure, String>>();
 
     await _firebaseAuth.verifyPhoneNumber(
         timeout: timeout,
@@ -35,20 +34,18 @@ class FirebaseAuthService implements IAuthService {
         verificationCompleted: (PhoneAuthCredential credential) async {
           // ANDROID ONLY!
           // Sign the user in (or link) with the auto-generated credential.
-          // TODO: We may add auto sign in feature later.
-          // await _firebaseAuth.signInWithCredential(credential);
-          // streamController.add(none());
+          // The feature is currently disabled for the sake of simplicity of the tutorial.
         },
         codeSent: (String verificationId, int? resendToken) async {
           // Update the UI - wait for the user to enter the SMS code
-          streamController.add(some(right(verificationId)));
+          streamController.add(right(verificationId));
         },
         codeAutoRetrievalTimeout: (String verificationId) {
           // Auto-resolution timed out...
-          streamController.add(some(left(const AuthFailure.smsTimeout())));
+          streamController.add(left(const AuthFailure.smsTimeout()));
         },
         verificationFailed: (FirebaseAuthException e) {
-          Either<AuthFailure, String> result;
+          late final Either<AuthFailure, String> result;
 
           if (e.code == 'invalid-phone-number') {
             result = left(const AuthFailure.invalidPhoneNumber());
@@ -59,7 +56,7 @@ class FirebaseAuthService implements IAuthService {
           } else {
             result = left(const AuthFailure.serverError());
           }
-          streamController.add(some(result));
+          streamController.add(result);
         });
 
     yield* streamController.stream;
@@ -90,11 +87,13 @@ class FirebaseAuthService implements IAuthService {
 
   @override
   Stream<AuthUserModel> get authStateChanges {
-    return _firebaseAuth.userChanges().map(
+    return _firebaseAuth.authStateChanges().map(
       (User? user) {
         if (user == null) {
+          // The user is signed out
           return AuthUserModel.empty();
         } else {
+          // The user is logged in
           return user.toDomain();
         }
       },

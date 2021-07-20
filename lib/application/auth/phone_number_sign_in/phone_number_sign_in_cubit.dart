@@ -14,8 +14,8 @@ part 'phone_number_sign_in_state.dart';
 
 @injectable
 class PhoneNumberSignInCubit extends Cubit<PhoneNumberSignInState> {
-  late IAuthService _authService;
-  StreamSubscription<Option<Either<AuthFailure, String>>>?
+  late final IAuthService _authService;
+  StreamSubscription<Either<AuthFailure, String>>?
       _phoneNumberSignInSubscription;
 
   final Duration verificationCodeTimeout = const Duration(seconds: 60);
@@ -58,19 +58,10 @@ class PhoneNumberSignInCubit extends Cubit<PhoneNumberSignInState> {
         .signInWithPhoneNumber(
             phoneNumber: state.phoneNumber, timeout: verificationCodeTimeout)
         .listen(
-      (Option<Either<AuthFailure, String>> smsEvent) {
-        smsEvent.fold(
-          () {
-            //  emit(state.copyWith(isInProgress: false));
-            // AUTO SIGN IN for newer android phones. We currently do not handle this case. All phone models are required to enter verification code.
-            // This will never get triggered unless the relevant code snippet in the infrastructure is enabled.
-          },
-          (Either<AuthFailure, String> either) => either.fold(
+          (Either<AuthFailure, String> failureOrVerificationId) =>
+              failureOrVerificationId.fold(
             (AuthFailure failure) {
               //This is the part where we receive failures like 'invalidPhoneNumber', 'smsTimeout' etc.
-              //If 'smsTimeout' failure is received, disable SMS entry widget and instead show, resend code button.
-              //This method, can be reused for sending a sms code but we are not sure if  it will not break our state machine if called from SMS entry page.
-              //
               emit(
                 state.copyWith(
                     failureOption: some(failure), isInProgress: false),
@@ -87,25 +78,28 @@ class PhoneNumberSignInCubit extends Cubit<PhoneNumberSignInState> {
             },
           ),
         );
-      },
-    );
   }
 
   void verifySmsCode() {
-    Either<AuthFailure, Unit> failureOrSuccess;
-
     state.verificationIdOption.fold(
       () {
-        //Verification id does not exist. This should not happen
+        //Verification id does not exist. This should not happen.
       },
       (String verificationId) async {
-        emit(state.copyWith(isInProgress: true, failureOption: none()));
-        failureOrSuccess = await _authService.verifySmsCode(
-            smsCode: state.smsCode, verificationId: verificationId);
+        emit(
+          state.copyWith(
+            isInProgress: true,
+            failureOption: none(),
+          ),
+        );
+        final Either<AuthFailure, Unit> failureOrSuccess =
+            await _authService.verifySmsCode(
+                smsCode: state.smsCode, verificationId: verificationId);
         failureOrSuccess.fold(
           (AuthFailure failure) {
-            emit(state.copyWith(
-                failureOption: some(failure), isInProgress: false));
+            emit(
+              state.copyWith(failureOption: some(failure), isInProgress: false),
+            );
           },
           (_) {
             emit(state.copyWith(isInProgress: false));

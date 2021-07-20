@@ -10,5 +10,5 @@ Future<void> main() async {
   await Firebase.initializeApp();
   configureInjection(Environment.dev);
 
-  runApp(MyApp());
+  runApp(AppWidget());
 }

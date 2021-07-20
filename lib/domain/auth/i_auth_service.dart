@@ -6,7 +6,7 @@ import 'auth_user_model.dart';
 abstract class IAuthService {
   Stream<AuthUserModel> get authStateChanges;
   Future<void> signOut();
-  Stream<Option<Either<AuthFailure, String>>> signInWithPhoneNumber({
+  Stream<Either<AuthFailure, String>> signInWithPhoneNumber({
     required String phoneNumber,
     required Duration timeout,
   });

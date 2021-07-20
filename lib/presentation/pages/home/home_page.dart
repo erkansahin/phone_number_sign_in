@@ -37,20 +37,24 @@ class HomePage extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Builder(builder: (context) {
-                    final String phoneNumber = context.select(
-                        (AuthCubit cubit) => cubit.state.userModel.phoneNumber);
-                    return PhoneNumberDisplay(
-                      phoneNumber: phoneNumber,
-                    );
-                  }),
+                  Builder(
+                    builder: (context) {
+                      final String phoneNumber = context.select(
+                          (AuthCubit cubit) =>
+                              cubit.state.userModel.phoneNumber);
+                      return PhoneNumberDisplay(
+                        phoneNumber: phoneNumber,
+                      );
+                    },
+                  ),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: AuthTextButton(
-                        text: "Logout",
-                        onPressed: () {
-                          context.read<AuthCubit>().signOut();
-                        }),
+                      text: "Logout",
+                      onPressed: () {
+                        context.read<AuthCubit>().signOut();
+                      },
+                    ),
                   ),
                 ],
               ),

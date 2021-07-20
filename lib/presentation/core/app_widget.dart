@@ -6,12 +6,12 @@ import '../../application/auth/auth_cubit.dart';
 import '../../injection.dart';
 import '../routes/router.gr.dart';
 
-class MyApp extends StatefulWidget {
+class AppWidget extends StatefulWidget {
   @override
-  _MyAppState createState() => _MyAppState();
+  _AppWidgetState createState() => _AppWidgetState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _AppWidgetState extends State<AppWidget> {
   final BotToastNavigatorObserver botToastNavigatorObserver =
       BotToastNavigatorObserver();
   final botToastBuilder = BotToastInit();

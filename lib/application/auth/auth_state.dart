@@ -13,5 +13,5 @@ class AuthState with _$AuthState {
         isUserCheckedFromAuthService: false,
       );
 
-  bool get isLoggedIn => userModel.id.isNotEmpty;
+  bool get isLoggedIn => userModel != AuthUserModel.empty();
 }

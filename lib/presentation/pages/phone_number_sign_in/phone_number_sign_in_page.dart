@@ -41,7 +41,6 @@ class _PhoneNumberSignInPageState extends State<PhoneNumberSignInPage> {
                   const HomeRoute(),
                 );
               }
-              context.read<PhoneNumberSignInCubit>().reset();
             },
           ),
           BlocListener<PhoneNumberSignInCubit, PhoneNumberSignInState>(

@@ -1,13 +1,9 @@
 include: package:lint/analysis_options.yaml
 
-
-
 linter:
   rules:
     always_declare_return_types: true
 
-
-  
 analyzer:
   
   exclude: 

@@ -1,11 +1,11 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:bare_bones/presentation/pages/phone_number_sign_in/constants/constants.dart';
-import 'package:bare_bones/presentation/pages/phone_number_sign_in/widgets/gradient_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../application/auth/auth_cubit.dart';
 import '../../routes/router.gr.dart';
+import '../phone_number_sign_in/constants/constants.dart';
+import '../phone_number_sign_in/widgets/gradient_container.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage() : super();
@@ -16,7 +16,7 @@ class LandingPage extends StatefulWidget {
 
 class _LandingPageState extends State<LandingPage> {
   @override
-  void didChangeDependencies() {
+  void initState() {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       final bool isUserLoggedIn = context.read<AuthCubit>().state.isLoggedIn;
       final bool isUserCheckedFromAuthService =
@@ -28,7 +28,7 @@ class _LandingPageState extends State<LandingPage> {
       }
     });
 
-    super.didChangeDependencies();
+    super.initState();
   }
 
   @override

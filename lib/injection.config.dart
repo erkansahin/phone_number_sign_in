@@ -12,7 +12,7 @@ import 'application/auth/auth_cubit.dart' as _i3;
 import 'application/auth/phone_number_sign_in/phone_number_sign_in_cubit.dart'
     as _i7;
 import 'domain/auth/i_auth_service.dart' as _i5;
-import 'infrastructure/auth/firebase_auth_facade.dart' as _i6;
+import 'infrastructure/auth/firebase_auth_service.dart' as _i6;
 import 'infrastructure/core/injectable_module.dart' as _i9;
 import 'presentation/routes/router.gr.dart'
     as _i8; // ignore_for_file: unnecessary_lambdas
