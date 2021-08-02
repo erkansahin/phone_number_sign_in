@@ -63,6 +63,14 @@ class _PhoneNumberSignInPageState extends State<PhoneNumberSignInPage> {
               });
             },
           ),
+          BlocListener<PhoneNumberSignInCubit, PhoneNumberSignInState>(
+            listenWhen: (p, c) =>
+                p.smsCode != c.smsCode &&
+                c.smsCode.length == PhoneNumberSignInCubit.smsCodeLength,
+            listener: (context, state) {
+              context.read<PhoneNumberSignInCubit>().verifySmsCode();
+            },
+          ),
         ],
         child: Container(
           decoration: const BoxDecoration(
@@ -114,12 +122,6 @@ class _PhoneNumberSignInPageState extends State<PhoneNumberSignInPage> {
                                                       PhoneNumberSignInCubit>()
                                                   .smsCodeChanged(
                                                       smsCode: val ?? "");
-                                            },
-                                            onCompleted: (val) {
-                                              context
-                                                  .read<
-                                                      PhoneNumberSignInCubit>()
-                                                  .verifySmsCode();
                                             },
                                             onTimerCompleted: () {
                                               BotToast.showText(

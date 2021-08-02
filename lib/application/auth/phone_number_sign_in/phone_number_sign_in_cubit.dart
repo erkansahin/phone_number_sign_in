@@ -7,6 +7,7 @@ import 'package:injectable/injectable.dart';
 
 import '../../../domain/auth/auth_failure.dart';
 import '../../../domain/auth/i_auth_service.dart';
+
 import '../../../injection.dart';
 
 part 'phone_number_sign_in_cubit.freezed.dart';
@@ -14,7 +15,9 @@ part 'phone_number_sign_in_state.dart';
 
 @injectable
 class PhoneNumberSignInCubit extends Cubit<PhoneNumberSignInState> {
+  static const int smsCodeLength = 6;
   late final IAuthService _authService;
+
   StreamSubscription<Either<AuthFailure, String>>?
       _phoneNumberSignInSubscription;
 
@@ -26,6 +29,7 @@ class PhoneNumberSignInCubit extends Cubit<PhoneNumberSignInState> {
   @override
   Future<void> close() async {
     await _phoneNumberSignInSubscription?.cancel();
+
     return super.close();
   }
 

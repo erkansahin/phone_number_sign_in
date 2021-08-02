@@ -8,9 +8,6 @@ import 'gradient_text.dart';
 class SMSCodeForm extends StatelessWidget {
   final String phoneNumber;
 
-  ///The callback called when the SMS code form has been completed.
-  final void Function(String?) onCompleted;
-
   ///The callback called when the SMS code form has changed.
   final void Function(String?) onChanged;
 
@@ -22,7 +19,6 @@ class SMSCodeForm extends StatelessWidget {
 
   const SMSCodeForm({
     required this.phoneNumber,
-    required this.onCompleted,
     required this.onChanged,
     required this.onTimerCompleted,
     required this.smsCodeTimeoutSeconds,
@@ -89,7 +85,6 @@ class SMSCodeForm extends StatelessWidget {
                 animationDuration: const Duration(milliseconds: 300),
                 backgroundColor: Colors.transparent,
                 controller: smsController,
-                onCompleted: onCompleted,
                 appContext: context,
                 onChanged: onChanged,
               ),
