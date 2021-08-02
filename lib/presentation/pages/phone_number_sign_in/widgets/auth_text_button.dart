@@ -19,7 +19,7 @@ class AuthTextButton extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             blurRadius: 4,
-            offset: Offset(0, 2),
+            offset: const Offset(0, 2),
             color: Colors.black.withOpacity(0.08),
           ),
         ],
