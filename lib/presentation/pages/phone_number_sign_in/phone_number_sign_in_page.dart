@@ -158,9 +158,8 @@ class _PhoneNumberSignInPageState extends State<PhoneNumberSignInPage> {
                                         child: Align(
                                           alignment: Alignment.topRight,
                                           child: phoneNumberSignInState
-                                                  .isInProgress
-                                              ? Container()
-                                              : AuthTextButton(
+                                                  .displayNextButton
+                                              ? AuthTextButton(
                                                   text: "Next",
                                                   onPressed: () {
                                                     if (_phoneFormKey
@@ -175,7 +174,8 @@ class _PhoneNumberSignInPageState extends State<PhoneNumberSignInPage> {
                                                           .signInWithPhoneNumber();
                                                     }
                                                   },
-                                                ),
+                                                )
+                                              : Container(),
                                         ),
                                       ),
                                       if (phoneNumberSignInState.isInProgress)
