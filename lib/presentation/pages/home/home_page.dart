@@ -37,11 +37,11 @@ class HomePage extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Builder(
-                    builder: (context) {
-                      final String phoneNumber = context.select(
-                          (AuthCubit cubit) =>
-                              cubit.state.userModel.phoneNumber);
+                  BlocSelector<AuthCubit, AuthState, String>(
+                    selector: (state) {
+                      return state.userModel.phoneNumber;
+                    },
+                    builder: (BuildContext context, String phoneNumber) {
                       return PhoneNumberDisplay(
                         phoneNumber: phoneNumber,
                       );

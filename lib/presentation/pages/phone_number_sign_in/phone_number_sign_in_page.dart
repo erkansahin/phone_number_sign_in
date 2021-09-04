@@ -34,13 +34,11 @@ class _PhoneNumberSignInPageState extends State<PhoneNumberSignInPage> {
       child: MultiBlocListener(
         listeners: [
           BlocListener<AuthCubit, AuthState>(
-            listenWhen: (p, c) => p.isLoggedIn != c.isLoggedIn,
+            listenWhen: (p, c) => p.isLoggedIn != c.isLoggedIn && c.isLoggedIn,
             listener: (context, state) {
-              if (state.isLoggedIn) {
-                AutoRouter.of(context).replace(
-                  const HomeRoute(),
-                );
-              }
+              AutoRouter.of(context).replace(
+                const HomeRoute(),
+              );
             },
           ),
           BlocListener<PhoneNumberSignInCubit, PhoneNumberSignInState>(
