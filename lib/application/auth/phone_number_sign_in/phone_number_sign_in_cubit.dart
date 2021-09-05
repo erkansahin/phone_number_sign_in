@@ -15,7 +15,6 @@ part 'phone_number_sign_in_state.dart';
 
 @injectable
 class PhoneNumberSignInCubit extends Cubit<PhoneNumberSignInState> {
-  static const int smsCodeLength = 6;
   late final IAuthService _authService;
 
   StreamSubscription<Either<AuthFailure, String>>?

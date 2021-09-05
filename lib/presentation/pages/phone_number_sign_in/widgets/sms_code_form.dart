@@ -14,6 +14,9 @@ class SMSCodeForm extends StatelessWidget {
   ///The callback called when the timer is completed.
   final void Function() onTimerCompleted;
 
+  //The callack is called when the SMS code form is filled
+  final Function(String)? onCompleted;
+
   ///The total amount of seconds until the SMS code will timeout.
   final int smsCodeTimeoutSeconds;
 
@@ -22,6 +25,7 @@ class SMSCodeForm extends StatelessWidget {
     required this.onChanged,
     required this.onTimerCompleted,
     required this.smsCodeTimeoutSeconds,
+    required this.onCompleted,
   });
 
   @override
@@ -87,6 +91,7 @@ class SMSCodeForm extends StatelessWidget {
                 controller: smsController,
                 appContext: context,
                 onChanged: onChanged,
+                onCompleted: onCompleted,
               ),
             ),
             Padding(
